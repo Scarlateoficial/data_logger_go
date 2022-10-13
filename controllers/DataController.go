@@ -14,6 +14,7 @@ func GetAllData(w http.ResponseWriter, r *http.Request) {
 
 	var body = configs.GetData("data")
 
+	w.Header().Set("Content-Type", "application/json")
 	fmt.Fprintf(w, "%v", body)
 }
 
@@ -27,6 +28,7 @@ func GetData(w http.ResponseWriter, r *http.Request) {
 
 	var body = configs.FilterData("data", topic)
 
+	w.Header().Set("Content-Type", "application/json")
 	fmt.Fprintf(w, "%v", body)
 }
 
@@ -40,5 +42,5 @@ func DeleteData(w http.ResponseWriter, r *http.Request) {
 
 	configs.DeleteData("data", topic)
 
-	fmt.Fprintf(w, "Data deleted")
+	fmt.Fprintf(w, "Deleted data with topic: %v", topic)
 }

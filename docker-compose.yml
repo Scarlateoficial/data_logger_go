@@ -1,0 +1,12 @@
+version: "3.9"
+services:
+  app:
+    build:
+      dockerfile: Dockerfile
+      context: .
+      target: dev
+    ports:
+      - "8883:8883"
+    volumes:
+      - .:/opt/app/api
+    network_mode: "host"
