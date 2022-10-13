@@ -9,10 +9,10 @@ import (
 
 func InitServer() {
 	http.HandleFunc("/", controller.GetAllData) // Update this line of code
-	http.HandleFunc("/data", controller.GetData)
+	http.HandleFunc("/filter", controller.GetData)
 	http.HandleFunc("/delete", controller.DeleteData)
 
-	fmt.Printf("Starting server at port 8080\n")
+	fmt.Printf("Starting server at port 8883\n")
 	if err := http.ListenAndServe("0.0.0.0:8883", nil); err != nil {
 		log.Fatal(err)
 	}

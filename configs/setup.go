@@ -46,7 +46,7 @@ func GetCollection(client *mongo.Client, collectionName string) *mongo.Collectio
 func InsertData(data *model.DataModel, collectionName string) {
 	collection := GetCollection(DB, collectionName)
 
-	var to_insert = bson.D{{"topic", data.Topic}, {"body", data.Payload}, {"uuid", data.Uuid}}
+	var to_insert = bson.D{{"topic", data.Topic}, {"body", data.Payload}, {"uuid", data.Uuid}, {"datetime", data.Datetime}}
 
 	_, err := collection.InsertOne(context.TODO(), to_insert)
 	if err != nil {
@@ -55,7 +55,7 @@ func InsertData(data *model.DataModel, collectionName string) {
 }
 
 // GetData gets data from the database
-func GetData(collectionName string) string {
+func GetData(collectionName string, indent bool) string {
 	collection := GetCollection(DB, collectionName)
 	cursor, err := collection.Find(context.Background(), bson.D{})
 	if err != nil {
@@ -67,9 +67,12 @@ func GetData(collectionName string) string {
 		panic(err)
 	}
 
-	output, err := json.Marshal(results)
-	if err != nil {
-		panic(err)
+	var output []byte
+
+	if indent {
+		output, err = json.MarshalIndent(results, "", "  ")
+	} else {
+		output, err = json.Marshal(results)
 	}
 
 	return string(output)
@@ -85,10 +88,10 @@ func DeleteData(collectionName string, topic string) {
 }
 
 // Filter data from the database
-func FilterData(collectionName string, Topic string) string {
+func FilterData(collectionName string, Arg string, Value string, indent bool) string {
 	collection := GetCollection(DB, collectionName)
 
-	cursor, err := collection.Find(context.Background(), bson.D{{"topic", Topic}})
+	cursor, err := collection.Find(context.Background(), bson.D{{Arg, Value}})
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -97,9 +100,13 @@ func FilterData(collectionName string, Topic string) string {
 	if err = cursor.All(context.TODO(), &results); err != nil {
 		panic(err)
 	}
-	output, err := json.Marshal(results)
-	if err != nil {
-		panic(err)
+
+	var output []byte
+
+	if indent {
+		output, err = json.MarshalIndent(results, "", "  ")
+	} else {
+		output, err = json.Marshal(results)
 	}
 
 	return string(output)

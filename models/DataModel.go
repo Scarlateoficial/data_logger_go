@@ -2,12 +2,14 @@ package models
 
 import (
 	"encoding/json"
+	"time"
 )
 
 type DataModel struct {
-	Topic   string `json:"topic"`
-	Payload string `json:"payload"`
-	Uuid    string `json:"uuid"`
+	Topic    string    `json:"topic"`
+	Payload  string    `json:"payload"`
+	Uuid     string    `json:"uuid"`
+	Datetime time.Time `json:"datetime"`
 }
 
 func DataToJson(data DataModel) string {
@@ -24,6 +26,6 @@ func JsonToData(jsonData string) DataModel {
 	return data
 }
 
-func NewDataModel(topic string, payload string, uuid string) *DataModel {
-	return &DataModel{Topic: topic, Payload: payload, Uuid: uuid}
+func NewDataModel(topic string, payload string, uuid string, datetime time.Time) *DataModel {
+	return &DataModel{Topic: topic, Payload: payload, Uuid: uuid, Datetime: datetime}
 }

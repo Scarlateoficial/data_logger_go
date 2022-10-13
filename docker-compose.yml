@@ -9,4 +9,24 @@ services:
       - "8883:8883"
     volumes:
       - .:/opt/app/api
-    network_mode: "host"
+    depends_on:
+      - mongo
+      - mosquitto
+    links:
+      - "mongo:mongo"
+      - "mosquitto:mosquitto"
+  mongo:
+    image: mongo
+    container_name: mongo
+    ports:
+      - "27018:27017"
+    volumes:
+      - ./mongo_data:/data/db
+  mosquitto:
+    image: eclipse-mosquitto
+    container_name: mosquitto
+    volumes:
+      - ./mosquitto:/mosquitto/:rw
+      - ./mosquitto.conf:/mosquitto/config/mosquitto.conf:ro
+    ports:
+      - "5222:1883"
