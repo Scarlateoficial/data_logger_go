@@ -111,3 +111,12 @@ func FilterData(collectionName string, Arg string, Value string, indent bool) st
 
 	return string(output)
 }
+
+func CountData(collectionName string) int64 {
+	collection := GetCollection(DB, collectionName)
+	count, err := collection.CountDocuments(context.Background(), bson.D{})
+	if err != nil {
+		log.Fatal(err)
+	}
+	return count
+}

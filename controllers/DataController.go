@@ -58,3 +58,15 @@ func DeleteData(w http.ResponseWriter, r *http.Request) {
 
 	fmt.Fprintf(w, "Deleted data with topic: %v", topic)
 }
+
+func CountData(w http.ResponseWriter, r *http.Request) {
+	if r.Method != "GET" {
+		http.Error(w, "Method is not supported.", http.StatusNotFound)
+		return
+	}
+
+	var body = configs.CountData("data")
+
+	w.Header().Set("Content-Type", "application/json")
+	fmt.Fprintf(w, "{'count':%v}", body)
+}
