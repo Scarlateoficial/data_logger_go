@@ -9,7 +9,6 @@ import (
 func main() {
 	fmt.Print("Hello Word!\n")
 
-	// start mqtt manager
-	mqtt.InitMqttClient()
-	routes.InitServer()
+	mqtt.InitMqttClient() // start mqtt manager
+	routes.InitServer()   // start web server
 }

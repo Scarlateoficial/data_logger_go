@@ -120,3 +120,46 @@ func CountData(collectionName string) int64 {
 	}
 	return count
 }
+
+func CountFillterData(collectionName string, Arg string, Value string) int64 {
+	collection := GetCollection(DB, collectionName)
+	count, err := collection.CountDocuments(context.Background(), bson.D{{Arg, Value}})
+	if err != nil {
+		log.Fatal(err)
+	}
+	return count
+}
+
+func LinearSearch(v []string, n string) int {
+	for i, k := range v {
+		if n == k {
+			return i
+		}
+	}
+
+	return -1
+}
+
+func GetItens(collectionName string, item string) []string {
+	collection := GetCollection(DB, collectionName)
+
+	cursor, err := collection.Find(context.Background(), bson.D{})
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	var results []bson.M
+	if err = cursor.All(context.TODO(), &results); err != nil {
+		panic(err)
+	}
+
+	var itens []string
+
+	for _, v := range results {
+		if LinearSearch(itens, v[item].(string)) == -1 {
+			itens = append(itens, v[item].(string))
+		}
+	}
+
+	return itens
+}
