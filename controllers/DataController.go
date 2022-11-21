@@ -69,7 +69,7 @@ func CountData(w http.ResponseWriter, r *http.Request) {
 	var body = configs.CountData("data")
 
 	w.Header().Set("Content-Type", "application/json")
-	fmt.Fprintf(w, "{'count':%v}", body)
+	fmt.Fprintf(w, "{\"count\":%v}", body)
 }
 
 func FilterAndCountData(w http.ResponseWriter, r *http.Request) {
